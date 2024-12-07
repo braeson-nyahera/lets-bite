@@ -4,6 +4,7 @@ from .forms import UserRegistrationForm
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from .utils import send_registration_email
+from django.utils.html import strip_tags
 
 # Create your views here.
 def login_user(request):
@@ -36,12 +37,14 @@ def user_registration(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
-            form.save()
+            
+            user = form.save()
 
-            user = request.user
             login(request, user)
             return redirect('home')
-        
+        else:
+            error = strip_tags(form.errors)
+            messages.error(request, f"Error : {error}")
     return render(request, 'user/register.html')
 
 def logout_user(request):

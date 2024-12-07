@@ -71,6 +71,17 @@ def update_cart(request, cart_item_id):
             messages.error(request, "Quantity must be greater than zero.")
     return redirect('cart')
 
+@login_required
+def order(request):
+    orders = Order.objects.filter(user = request.user).order_by('-created_at')
+
+    context = {
+        'orders': orders
+    }
+
+    return render(request,'home/order_list.html', context)
+
+
 def order_summary(request):
     cart_ins = Cart.objects.get(user = request.user)
     # Retrieve the user's cart items
@@ -96,13 +107,13 @@ def checkout(request):
     cart_ins = Cart.objects.get(user = request.user)
     # Retrieve the user's cart items
     cart_items = CartItem.objects.filter(cart=cart_ins.id)
-
+    item_instance = CartItem.objects.filter(cart = cart_ins.id).first()
     if not cart_items.exists():
         messages.error(request, "Your cart is empty!")
         return redirect('cart')
 
     # Create an order
-    order = Order.objects.create(user=request.user, cost= cart_ins.total_price())
+    order = Order.objects.create(user=request.user, cost= cart_ins.total_price(), hotel = item_instance.menu_item.hotel)
     
     # Add items to the order
     for item in cart_items:

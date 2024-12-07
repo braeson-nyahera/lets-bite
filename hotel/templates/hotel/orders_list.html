@@ -1,0 +1,15 @@
+{% extends 'hotel/hotel_base.html' %}
+{% load static %}
+
+{% block hotel %}
+    {% if order %}
+
+    {% else %}
+    <div class="flex justify-center items-center">
+        <div class="grid place-items-center rounded w-1/2 m-3 p-4 bg-blue-200">
+        <div><h2 class="font-bold m-2">Ooops! No order found</h2></div>
+        <div><h2 class="m-1">Let's keep positive an order will be made</h2></div>
+        </div>
+    </div>
+    {% endif %}
+{% endblock hotel %}

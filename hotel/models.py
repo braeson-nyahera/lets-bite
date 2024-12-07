@@ -62,9 +62,11 @@ class Order(models.Model):
     class Status(models.TextChoices):
         Packing = 'Packing',
         InTransit = 'In-transit',
-        Delivered = 'Deliveres',
+        Delivered = 'Delivered',
+        Cancelled = 'Cancelled',
         
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    hotel = models.ForeignKey(Hotel,on_delete=models.DO_NOTHING)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     cost = models.IntegerField( default=0)

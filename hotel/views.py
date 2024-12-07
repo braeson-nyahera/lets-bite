@@ -1,23 +1,38 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.urls import reverse
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import HotelForm, MenuForm
 from django.utils.html import strip_tags
-from .models import Menu,Hotel,Cart, CartItem
+from .models import Menu,Hotel, Order
 from django.views.generic import ListView, UpdateView
 
 
 # Create your views here.
 
 def hotel_home(request):
-    hotel = Hotel.objects.get(owner=request.user)
-    menu = Menu.objects.filter(hotel=hotel.id)
+    try:
+        hotel = Hotel.objects.get(owner_id=request.user)
+        menu = Menu.objects.filter(hotel=hotel.id)
+        order = Order.objects.filter(hotel=hotel.id).order_by('-created_at')[:6]
+        number_order = Order.objects.filter(hotel=hotel.id)
 
-    context = {
-        'menu': menu,
-    }
+        revenue = 0
+        for order_item in number_order:
+            revenue += order_item.cost
+
+        context = {
+            'menu': menu,
+            'order': order,
+            'number_orders': number_order,
+            'revenue':revenue
+        }
+    except Hotel.DoesNotExist:
+        return redirect('hotel_not_found')
+
     return render(request,'hotel/hotel_home.html', context)
+
+def hotel_not_found(request):
+    return render(request,'hotel/hotel_not_found.html')
 
 def add_hotel(request):
     form = HotelForm()
@@ -88,55 +103,14 @@ class MenuUpdateView(UpdateView):
     def get_success_url(self):
         return reverse('menu-list')
     
-
-
-
-
-# Get or create a cart for the user
-def get_user_cart(user):
-    cart, created = Cart.objects.get_or_create(user=user)
-    return cart
-
-@login_required
-def add_to_cart(request, menu_id):
-    menu_item = get_object_or_404(Menu, id=menu_id)
-    cart = get_user_cart(request.user)
-
-    # Check if item already exists in the cart
-    cart_item, created = CartItem.objects.get_or_create(cart=cart, menu_item=menu_item)
-    if not created:
-        cart_item.quantity += 1
-        cart_item.save()
-
-    messages.success(request, f"{menu_item.title} added to cart.")
-    return redirect('cart')
-
-@login_required
-def view_cart(request):
-    cart = get_user_cart(request.user)
+def hotel_orders(request):
+    hotel = Hotel.objects.get(owner_id=request.user)
+    order = Order.objects.filter(hotel=hotel.id).order_by('-created_at')
 
     context = {
-        'cart': cart
+        'orders' :order
     }
-    return render(request, 'home/cart.html', context)
 
-@login_required
-def remove_from_cart(request, cart_item_id):
-    cart_item = get_object_or_404(CartItem, id=cart_item_id, cart__user=request.user)
-    cart_item.delete()
-    messages.success(request, "Item removed from cart.")
-    return redirect('cart')
+    return render(request, 'hotel/orders_list.html')
 
-@login_required
-def update_cart(request, cart_item_id):
-    cart_item = get_object_or_404(CartItem, id=cart_item_id, cart__user=request.user)
 
-    if request.method == 'POST':
-        quantity = int(request.POST.get('quantity', 1))
-        if quantity > 0:
-            cart_item.quantity = quantity
-            cart_item.save()
-            messages.success(request, "Cart updated successfully.")
-        else:
-            messages.error(request, "Quantity must be greater than zero.")
-    return redirect('cart')

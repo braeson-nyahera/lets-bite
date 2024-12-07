@@ -20,9 +20,9 @@
 
         <!-- Delivery Details -->
         <div class="bg-white p-4 rounded-lg shadow-md border">
-            <h2 class="text-lg font-bold text-gray-800 mb-2">Delivery Address</h2>
-            <p class="text-sm text-gray-600">{{ order.delivery_address }}</p>
-            <p class="text-sm text-gray-600">{{ order.city }}, {{ order.zip_code }}</p>
+            <h2 class="text-lg font-bold text-gray-800 mb-2">Hotel Ordered</h2>
+            <p class="text-sm text-gray-600">{{ order.hotel.name }}</p>
+            <p class="text-sm text-gray-600">{{ order.hotel.location }}</p>
         </div>
 
         <!-- Payment Details -->
