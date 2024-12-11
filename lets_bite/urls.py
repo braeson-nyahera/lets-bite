@@ -21,6 +21,7 @@ from django.conf.urls.static import static
 from user import urls as user_urls
 from home import urls as home_urls
 from hotel import urls as hotel_urls
+from mpesa import urls as mpesa_urls
 
 
 
@@ -29,6 +30,7 @@ urlpatterns = [
     path('user/',include(user_urls)),
     path('',include(home_urls)),
     path('hotel/',include(hotel_urls)),
+    path('mpesa/',include(mpesa_urls)),
 ]
 
 if settings.DEBUG:

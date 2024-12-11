@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from hotel.models import Menu, Cart, CartItem, Order, OrderItem
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+import requests
+from mpesa.credentials import MpesaAccessToken, MpesaPassword
+from mpesa.models import Transaction
 
 
 # Create your views here.
@@ -98,8 +101,59 @@ def order_summary(request):
         'total_cost': total_cost
     }
     if request.method == 'POST':
-        return redirect('checkout')
-    
+        phone = request.POST['phone']
+        if not phone:
+            messages.error(request, "Phone number is required!")
+            return redirect('order-summary')
+        payment_phone = validate_number(phone)
+        amount = total_cost
+        access_token = MpesaAccessToken.get_mpesa_access_token()
+        api_url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest'
+        headers = {"Authorization": f"Bearer {access_token}"}
+
+        transaction = Transaction.objects.create(
+            phone_number=payment_phone,
+            amount=amount(),
+            status="Pending",
+            description="Awaiting callback",
+            name=request.user.username,
+        )
+
+        # Payload for Mpesa API
+        payload = {
+            "BusinessShortCode": MpesaPassword.get_business_short_code(),
+            "Password": MpesaPassword.get_decoded_password(),
+            "Timestamp": MpesaPassword.get_lipa_time(),
+            "TransactionType": "CustomerPayBillOnline",
+            "Amount": amount(),
+            "PartyA": payment_phone,
+            "PartyB": MpesaPassword.get_business_short_code(),
+            "PhoneNumber": payment_phone,
+            "CallBackURL": "https://13ef-154-159-252-208.ngrok-free.app/mpesa/callback/",
+            "AccountReference": "Lets_Bite", 
+            "TransactionDesc": "Payment for order",
+        }
+
+        try:
+            response = requests.post(api_url, json=payload, headers=headers)
+            response_data = response.json()
+
+            if response.status_code == 200:
+                messages.success(request, "Payment initiated successfully!")
+                transaction_id = response_data.get('CheckoutRequestID', None)
+                transaction.transaction_id = transaction_id
+                transaction.description = response_data.get('ResponseDescription', 'No description')
+                transaction.save()
+
+                return redirect('waiting-page',transaction_id = transaction.transaction_id)
+            else:
+                error_message = response_data.get("errorMessage", "An error occurred.")
+                messages.error(request, f"Payment failed: {error_message}")
+
+        except requests.RequestException as e:
+            messages.error(request, f"An error occurred while connecting to Mpesa: {str(e)}")
+
+        
     return render(request,'home/order_summary.html', context)
 
 @login_required
@@ -137,3 +191,16 @@ def order_details(request,order_id):
         'order':order
     }
     return render(request,'home/order-details.html', context)
+
+def validate_number(input):
+    # Ensure inputs are strings for easy manipulation
+    input = str(input)
+    prefix = str(254)
+    
+    # Get the last 9 digits
+    trimmed = input[-9:]
+    
+    # Prepend the prefix
+    result = prefix + trimmed
+    
+    return result

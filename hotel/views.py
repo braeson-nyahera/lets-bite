@@ -4,7 +4,7 @@ from django.contrib import messages
 from .forms import HotelForm, MenuForm
 from django.utils.html import strip_tags
 from .models import Menu,Hotel, Order
-from django.views.generic import ListView, UpdateView
+from django.views.generic import ListView, UpdateView, DeleteView
 
 
 # Create your views here.
@@ -99,6 +99,13 @@ class MenuUpdateView(UpdateView):
         
         # Save form and handle any additional processing
         return super().form_valid(form)
+    
+    def get_success_url(self):
+        return reverse('menu-list')
+    
+class MenuDeleteView(DeleteView):
+    model = Menu
+    template_name = 'hotel/menu_delete_confirm.html'
     
     def get_success_url(self):
         return reverse('menu-list')

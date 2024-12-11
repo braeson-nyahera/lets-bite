@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-#sk9su^2v^o8r070_vig*v!jc0-#cuhz=+ri6ep=8g4b@%2^&@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost','127.0.0.1','13ef-154-159-252-208.ngrok-free.app']
 
 
 # Application definition
@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'home.apps.HomeConfig',
     'user.apps.UserConfig',
     'hotel.apps.HotelConfig',
+    'mpesa.apps.MpesaConfig',
 ]
 
 AUTH_USER_MODEL = 'user.CustomUser'

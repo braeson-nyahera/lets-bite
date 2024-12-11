@@ -5,6 +5,6 @@ if (alertBox) {
     // Set a timeout to hide the alert after 10 seconds
     setTimeout(() => {
     alertBox.classList.add("hidden");
-    }, 10000); // 10000 milliseconds = 10 seconds
+    }, 5000); // 5000 milliseconds = 5 seconds
 }
 });
