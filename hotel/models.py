@@ -8,6 +8,7 @@ class Hotel(models.Model):
     location = models.CharField(max_length=200)
     phone = models.CharField(max_length=200)
     email = models.EmailField()
+    hotel_image = models.ImageField(upload_to='hotels/', default='hotel_default.png')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

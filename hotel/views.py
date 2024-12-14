@@ -118,6 +118,6 @@ def hotel_orders(request):
         'orders' :order
     }
 
-    return render(request, 'hotel/orders_list.html')
+    return render(request, 'hotel/orders_list.html', context)
 
 

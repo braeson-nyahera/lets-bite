@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from hotel.models import Menu, Cart, CartItem, Order, OrderItem
+from hotel.models import Menu, Cart, CartItem, Order, OrderItem, Hotel
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 import requests
@@ -24,6 +24,15 @@ def menulist(request):
     }
 
     return render(request,'home/menu_list.html', context)
+
+def hotels(request):
+    hotels = Hotel.objects.all()
+
+    context = {
+        'hotels': hotels
+    }
+
+    return render(request, 'home/hotel_list.html',context)
 
 # Get or create a cart for the user
 def get_user_cart(user):
@@ -129,7 +138,7 @@ def order_summary(request):
             "PartyA": payment_phone,
             "PartyB": MpesaPassword.get_business_short_code(),
             "PhoneNumber": payment_phone,
-            "CallBackURL": "https://13ef-154-159-252-208.ngrok-free.app/mpesa/callback/",
+            "CallBackURL": "https://rnqsz-154-159-252-208.a.free.pinggy.link/mpesa/callback/",
             "AccountReference": "Lets_Bite", 
             "TransactionDesc": "Payment for order",
         }
