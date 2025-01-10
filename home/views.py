@@ -34,6 +34,28 @@ def hotels(request):
 
     return render(request, 'home/hotel_list.html',context)
 
+def hotel_detail(request, hotel_id):
+    hotel = get_object_or_404(Hotel,id = hotel_id)
+    menulist = Menu.objects.filter(hotel = hotel_id)
+
+    context = {
+        'hotel': hotel,
+        'menus': menulist
+    }
+
+    return render(request, 'home/hotel_detail.html',context)
+
+def menu_detail(request, menu_id):
+    menu_detail = get_object_or_404(Menu,id = menu_id)
+    menulist = Menu.objects.filter(title = menu_detail.title).exclude(id = menu_id)
+
+    context = {
+        'menu_detail': menu_detail,
+        'menus': menulist
+    }
+
+    return render(request, 'home/menu_detail.html',context)
+
 # Get or create a cart for the user
 def get_user_cart(user):
     cart, created = Cart.objects.get_or_create(user=user)
@@ -138,8 +160,8 @@ def order_summary(request):
             "PartyA": payment_phone,
             "PartyB": MpesaPassword.get_business_short_code(),
             "PhoneNumber": payment_phone,
-            "CallBackURL": "https://rnqsz-154-159-252-208.a.free.pinggy.link/mpesa/callback/",
-            "AccountReference": "Lets_Bite", 
+            "CallBackURL": "https://e395-197-232-85-115.ngrok-free.app/mpesa/callback/",
+            "AccountReference": "Lets_Bite",
             "TransactionDesc": "Payment for order",
         }
 

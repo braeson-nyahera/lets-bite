@@ -11,7 +11,6 @@
         <thead>
           <tr class="bg-gray-100 text-left text-gray-600 text-sm font-medium uppercase tracking-wider">
             <th class="px-4 py-3 border">Order ID</th>
-            <th class="px-4 py-3 border">Customer</th>
             <th class="px-4 py-3 border">Items</th>
             <th class="px-4 py-3 border">Cost</th>
             <th class="px-4 py-3 border">Status</th>
@@ -24,9 +23,6 @@
             <!-- Order ID -->
             <td class="px-4 py-3 border font-medium text-gray-800">{{ order.id }}</td>
             
-            <!-- Customer Name -->
-            <td class="px-4 py-3 border text-gray-700">{{ order.customer.name }}</td>
-            
             <!-- Items -->
             <td class="px-4 py-3 border text-gray-600">
               <ul class="list-disc ml-4">
@@ -37,7 +33,7 @@
             </td>
             
             <!-- Cost -->
-            <td class="px-4 py-3 border text-gray-800 font-semibold">${{ order.cost }}</td>
+            <td class="px-4 py-3 border text-gray-800 font-semibold">Kshs. {{ order.cost }}</td>
             
             <!-- Status -->
             <td class="px-4 py-3 border">
