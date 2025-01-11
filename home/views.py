@@ -160,7 +160,7 @@ def order_summary(request):
             "PartyA": payment_phone,
             "PartyB": MpesaPassword.get_business_short_code(),
             "PhoneNumber": payment_phone,
-            "CallBackURL": "https://e395-197-232-85-115.ngrok-free.app/mpesa/callback/",
+            "CallBackURL": "https://lets-bite.onrender.com/mpesa/callback/",
             "AccountReference": "Lets_Bite",
             "TransactionDesc": "Payment for order",
         }
