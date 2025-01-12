@@ -47,6 +47,9 @@ INSTALLED_APPS = [
     'user.apps.UserConfig',
     'hotel.apps.HotelConfig',
     'mpesa.apps.MpesaConfig',
+
+    #third parties
+    'storages'
 ]
 
 AUTH_USER_MODEL = 'user.CustomUser'
@@ -138,6 +141,27 @@ TIME_ZONE = 'Africa/Nairobi'
 USE_I18N = True
 
 USE_TZ = True
+
+#S3 bucket initialization
+
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+
+AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_FILE_OVERWRITE = False
+
+#storages
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+    },
+
+    "staticfiles": {
+        "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+    },
+}
+
 
 
 # Static files (CSS, JavaScript, Images)
