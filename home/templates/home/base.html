@@ -4,124 +4,297 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lets_bite</title>
+  <title>Let's Bite - Delicious Food Delivered</title>
   <link href="{% static 'home/css/style.css' %}" rel="stylesheet">
   <link rel="icon" href="{% static 'home/assets/lets_bite.png' %}" type="image/png">
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'food-orange': '#FF6B35',
+            'food-red': '#E63946',
+            'food-green': '#2D8A2F',
+            'food-yellow': '#F7B801',
+            'food-brown': '#8B4513',
+            'warm-gray': '#F8F9FA',
+          },
+          fontFamily: {
+            'sans': ['Inter', 'ui-sans-serif', 'system-ui'],
+          }
+        }
+      }
+    }
+  </script>
 </head>
-<body>
+<body class="bg-gradient-to-br from-warm-gray to-orange-50 font-sans min-h-screen">
     
-
-<nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-    <div class="px-3 py-3 lg:px-5 lg:pl-3">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center justify-start rtl:justify-end">
-          <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+<!-- Enhanced Navigation -->
+<nav class="fixed top-0 z-50 w-full bg-white/95 backdrop-blur-md border-b border-orange-100 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Mobile menu button -->
+        <div class="md:hidden">
+          <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" 
+                  class="inline-flex items-center p-2 text-food-orange rounded-lg hover:bg-orange-50 focus:outline-none focus:ring-2 focus:ring-food-orange transition-all duration-200">
               <span class="sr-only">Open sidebar</span>
-              <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                 <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                 <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
               </svg>
-           </button>
-          <a href="{% url 'home' %}" class="flex ms-2 md:me-24">
-            <img src="{% static 'home/assets/lets_bite.png' %}" class="h-10 me-3" alt="Lets_Bite Logo" />
-            <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Lets_bite</span>
+          </button>
+        </div>
+        
+        <!-- Logo -->
+        <div class="flex items-center">
+          <a href="{% url 'home' %}" class="flex items-center space-x-3 group">
+            <div class="relative">
+              <img src="{% static 'home/assets/lets_bite.png' %}" class="h-10 w-10 rounded-xl shadow-md group-hover:shadow-lg transition-all duration-200" alt="Let's Bite Logo" />
+              <div class="absolute -inset-1 bg-gradient-to-r from-food-orange to-food-red rounded-xl opacity-30 group-hover:opacity-60 transition-opacity duration-200"></div>
+            </div>
+            <span class="text-2xl font-bold bg-gradient-to-r from-food-orange to-food-red bg-clip-text text-transparent">
+              Let's Bite
+            </span>
           </a>
         </div>
+        
+        <!-- Desktop Navigation -->
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="{% url 'home' %}" class="text-gray-700 hover:text-food-orange px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200">Home</a>
+          <a href="{% url 'hotels' %}" class="text-gray-700 hover:text-food-orange px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200">Restaurants</a>
+          <a href="{% url 'menu' %}" class="text-gray-700 hover:text-food-orange px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200">Menu</a>
+        </div>
+        
+        <!-- Right side actions -->
         {% if user.is_authenticated %}
-            <div class="flex items-center">
-               <div class="flex items-center ms-3">
-               <div class="flex mx-5">
-                  <a class="hidden sm:block mx-5 px-5 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-lg shadow-md transition duration-200" href="{% url 'hotel-home' %}"> Hotel Management </a>
-                  <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
-                     <span class="sr-only">Open user menu</span>
-                     <img class="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
-                  </button>
-               </div>
-               <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">
-                  <div class="px-4 py-3" role="none">
-                     <p class="text-sm text-gray-900 dark:text-white" role="none">
-                     {{ request.user.username }}
-                     </p>
-                     <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
-                     {{ request.user.email }}
-                     </p>
+            <div class="flex items-center space-x-4">
+              <!-- Cart Icon with badge -->
+              <a href="{% url 'cart' %}" class="relative p-2 text-gray-700 hover:text-food-orange transition-colors duration-200">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.1 5M7 13l-1.1-5m0 0L4 5H2m5 8v6a2 2 0 002 2h6a2 2 0 002-2v-6"></path>
+                </svg>
+                <span class="absolute -top-2 -right-2 bg-food-red text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+              </a>
+              
+              <!-- Hotel Management Button -->
+              <a href="{% url 'hotel-home' %}" class="hidden sm:flex items-center px-4 py-2 bg-gradient-to-r from-food-orange to-food-red text-white font-medium rounded-lg hover:from-food-red hover:to-food-orange transform hover:scale-105 transition-all duration-200 shadow-md">
+                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4zM18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"></path>
+                </svg>
+                Manage Restaurant
+              </a>
+              
+              <!-- User Profile Dropdown -->
+              <div class="relative">
+               <button type="button" class="flex items-center space-x-3 text-sm rounded-full hover:ring-4 hover:ring-orange-100 transition-all duration-200" aria-expanded="false" data-dropdown-toggle="dropdown-user">
+                 <img class="w-10 h-10 rounded-full object-cover border-2 border-orange-200" src="https://ui-avatars.com/api/?name={{ request.user.username }}&background=FF6B35&color=fff&size=40" alt="user photo">
+                 <div class="hidden md:block text-left">
+                   <p class="text-sm font-semibold text-gray-900">{{ request.user.username }}</p>
+                   <p class="text-xs text-gray-500">Food Lover</p>
+                 </div>
+               </button>
+               
+               <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-xl shadow-lg border border-gray-100" id="dropdown-user">
+                  <div class="px-4 py-3">
+                     <p class="text-sm text-gray-900 font-semibold">{{ request.user.username }}</p>
+                     <p class="text-sm text-gray-500 truncate">{{ request.user.email }}</p>
                   </div>
-                  <ul class="py-1" role="none">
-                     <li>
-                     <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Dashboard</a>
-                     </li>
-                     <li>
-                     <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Settings</a>
-                     </li>
-                     <li>
-                     <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Earnings</a>
-                     </li>
-                     <li>
-                     <a href="{% url 'logout' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Sign out</a>
-                     </li>
+                  <ul class="py-2">
+                     <li><a href="{% url 'order-list' %}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-food-orange transition-colors duration-200">
+                       <svg class="w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 20 20"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path><path fill-rule="evenodd" d="M4 5a2 2 0 012-2v1a2 2 0 002 2h2a2 2 0 002-2V3a2 2 0 012 2v6h-4.586l1.293-1.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L10.414 13H15v3a2 2 0 01-2 2H6a2 2 0 01-2-2V5z" clip-rule="evenodd"></path></svg>
+                       My Orders</a></li>
+                     <li><a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-food-orange transition-colors duration-200">
+                       <svg class="w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"></path></svg>
+                       Settings</a></li>
+                     <li><a href="{% url 'logout' %}" class="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors duration-200">
+                       <svg class="w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd"></path></svg>
+                       Sign out</a></li>
                   </ul>
                </div>
-               </div>
+              </div>
             </div>
+         {% else %}
+           <div class="flex items-center space-x-4">
+             <a href="{% url 'login' %}" class="text-gray-700 hover:text-food-orange px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200">Sign In</a>
+             <a href="{% url 'register' %}" class="bg-gradient-to-r from-food-orange to-food-red text-white px-4 py-2 rounded-lg text-sm font-medium hover:from-food-red hover:to-food-orange transform hover:scale-105 transition-all duration-200 shadow-md">Sign Up</a>
+           </div>
          {% endif %}
       </div>
     </div>
   </nav>
-  
-  <aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidebar">
-     <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
-        <ul class="space-y-2 font-medium">
-           <li>
-              <a href="{% url 'home' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                 <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M19.07,4.93C17.22,3 14.66,1.96 12,2C9.34,1.96 6.79,3 4.94,4.93C3,6.78 1.96,9.34 2,12C1.96,14.66 3,17.21 4.93,19.06C6.78,21 9.34,22.04 12,22C14.66,22.04 17.21,21 19.06,19.07C21,17.22 22.04,14.66 22,12C22.04,9.34 21,6.78 19.07,4.93M17,12V18H13.5V13H10.5V18H7V12H5L12,5L19.5,12H17Z" />
-               </svg>
-                 <span class="ms-3">Home</span>
-              </a>
-           </li>
-           <li>
-              <a href="{% url 'menu' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                 <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
-                    <path d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z"/>
-                 </svg>
-                 <span class="flex-1 ms-3 whitespace-nowrap">Menus</span>
-              </a>
-           </li>
-           <li>
-           <li>
-              <a href="{% url 'hotels' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M0,21V10L7.5,5L15,10V21H10V14H5V21H0M24,2V21H17V8.93L16,8.27V6H14V6.93L10,4.27V2H24M21,14H19V16H21V14M21,10H19V12H21V10M21,6H19V8H21V6Z" />
-               </svg>
-                
-                 <span class="flex-1 ms-3 whitespace-nowrap">Hotels</span>
-              </a>
-           </li>
-           <li>
-              <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                 <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="m17.418 3.623-.018-.008a6.713 6.713 0 0 0-2.4-.569V2h1a1 1 0 1 0 0-2h-2a1 1 0 0 0-1 1v2H9.89A6.977 6.977 0 0 1 12 8v5h-2V8A5 5 0 1 0 0 8v6a1 1 0 0 0 1 1h8v4a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-4h6a1 1 0 0 0 1-1V8a5 5 0 0 0-2.582-4.377ZM6 12H4a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Z"/>
-                 </svg>
-                 <span class="flex-1 ms-3 whitespace-nowrap">Messages</span>
-                 <span class="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">3</span>
-              </a>
-           </li>
-           <li>
-              <a href="{% url 'cart' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                 <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-                </svg>
-                
-                 <span class="flex-1 ms-3 whitespace-nowrap">My cart</span>
-              </a>
-           </li>
 
-           <li>
-              <a href="{% url 'order-list' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                 <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
-                    <path d="M17 5.923A1 1 0 0 0 16 5h-3V4a4 4 0 1 0-8 0v1H2a1 1 0 0 0-1 .923L.086 17.846A2 2 0 0 0 2.08 20h13.84a2 2 0 0 0 1.994-2.153L17 5.923ZM7 9a1 1 0 0 1-2 0V7h2v2Zm0-5a2 2 0 1 1 4 0v1H7V4Zm6 5a1 1 0 1 1-2 0V7h2v2Z"/>
-                 </svg>
+<!-- Enhanced Mobile Sidebar -->
+<aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-80 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-orange-100 sm:translate-x-0 md:hidden shadow-xl" aria-label="Sidebar">
+   <div class="h-full px-6 pb-8 overflow-y-auto bg-gradient-to-b from-white to-orange-50">
+      
+      <!-- User Profile Section (Mobile) -->
+      {% if user.is_authenticated %}
+      <div class="mb-8 p-4 bg-white rounded-xl shadow-md border border-orange-100">
+         <div class="flex items-center space-x-3">
+            <img class="w-12 h-12 rounded-full object-cover border-2 border-orange-200" src="https://ui-avatars.com/api/?name={{ request.user.username }}&background=FF6B35&color=fff&size=48" alt="user photo">
+            <div>
+               <p class="text-sm font-semibold text-gray-900">{{ request.user.username }}</p>
+               <p class="text-xs text-gray-500">Food Enthusiast</p>
+            </div>
+         </div>
+      </div>
+      {% endif %}
+
+      <!-- Navigation Links -->
+      <ul class="space-y-3 font-medium">
+         <li>
+            <a href="{% url 'home' %}" class="flex items-center p-3 text-gray-900 rounded-xl hover:bg-gradient-to-r hover:from-orange-100 hover:to-red-100 hover:text-food-orange group transition-all duration-200">
+               <svg class="w-5 h-5 text-gray-500 transition duration-200 group-hover:text-food-orange" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M10.707 2.293a1 1 0 00-1.414 0l-9 9a1 1 0 001.414 1.414L2 12.414V17a1 1 0 001 1h2a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1h2a1 1 0 001-1v-4.586l.293.293a1 1 0 001.414-1.414l-9-9z"></path>
+               </svg>
+               <span class="ms-3 font-medium">Home</span>
+            </a>
+         </li>
+         
+         <li>
+            <a href="{% url 'hotels' %}" class="flex items-center p-3 text-gray-900 rounded-xl hover:bg-gradient-to-r hover:from-orange-100 hover:to-red-100 hover:text-food-orange group transition-all duration-200">
+               <svg class="w-5 h-5 text-gray-500 transition duration-200 group-hover:text-food-orange" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4zM18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"></path>
+               </svg>
+               <span class="ms-3 font-medium">Restaurants</span>
+            </a>
+         </li>
+         
+         <li>
+            <a href="{% url 'menu' %}" class="flex items-center p-3 text-gray-900 rounded-xl hover:bg-gradient-to-r hover:from-orange-100 hover:to-red-100 hover:text-food-orange group transition-all duration-200">
+               <svg class="w-5 h-5 text-gray-500 transition duration-200 group-hover:text-food-orange" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
+               </svg>
+               <span class="ms-3 font-medium">Full Menu</span>
+            </a>
+         </li>
+         
+         {% if user.is_authenticated %}
+         <li class="pt-4 border-t border-orange-200">
+            <a href="{% url 'cart' %}" class="flex items-center p-3 text-gray-900 rounded-xl hover:bg-gradient-to-r hover:from-orange-100 hover:to-red-100 hover:text-food-orange group transition-all duration-200">
+               <svg class="w-5 h-5 text-gray-500 transition duration-200 group-hover:text-food-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.1 5M7 13l-1.1-5m0 0L4 5H2m5 8v6a2 2 0 002 2h6a2 2 0 002-2v-6"></path>
+               </svg>
+               <span class="ms-3 font-medium">My Cart</span>
+               <span class="ms-auto bg-food-red text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+            </a>
+         </li>
+         
+         <li>
+            <a href="{% url 'order-list' %}" class="flex items-center p-3 text-gray-900 rounded-xl hover:bg-gradient-to-r hover:from-orange-100 hover:to-red-100 hover:text-food-orange group transition-all duration-200">
+               <svg class="w-5 h-5 text-gray-500 transition duration-200 group-hover:text-food-orange" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path>
+                  <path fill-rule="evenodd" d="M4 5a2 2 0 012-2v1a2 2 0 002 2h2a2 2 0 002-2V3a2 2 0 012 2v6h-4.586l1.293-1.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L10.414 13H15v3a2 2 0 01-2 2H6a2 2 0 01-2-2V5z" clip-rule="evenodd"></path>
+               </svg>
+               <span class="ms-3 font-medium">My Orders</span>
+            </a>
+         </li>
+         
+         <li>
+            <a href="{% url 'hotel-home' %}" class="flex items-center p-3 text-gray-900 rounded-xl hover:bg-gradient-to-r hover:from-orange-100 hover:to-red-100 hover:text-food-orange group transition-all duration-200">
+               <svg class="w-5 h-5 text-gray-500 transition duration-200 group-hover:text-food-orange" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4zM18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"></path>
+               </svg>
+               <span class="ms-3 font-medium">Manage Restaurant</span>
+            </a>
+         </li>
+         
+         <li class="pt-4 border-t border-orange-200">
+            <a href="{% url 'logout' %}" class="flex items-center p-3 text-red-600 rounded-xl hover:bg-red-50 group transition-all duration-200">
+               <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd"></path>
+               </svg>
+               <span class="ms-3 font-medium">Sign Out</span>
+            </a>
+         </li>
+         {% else %}
+         <li class="pt-4 border-t border-orange-200">
+            <a href="{% url 'login' %}" class="flex items-center p-3 text-gray-900 rounded-xl hover:bg-gradient-to-r hover:from-orange-100 hover:to-red-100 hover:text-food-orange group transition-all duration-200">
+               <svg class="w-5 h-5 text-gray-500 transition duration-200 group-hover:text-food-orange" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M3 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1zm7.293 2.293a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L12.586 10H5a1 1 0 110-2h7.586L10.293 6.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+               </svg>
+               <span class="ms-3 font-medium">Sign In</span>
+            </a>
+         </li>
+         
+         <li>
+            <a href="{% url 'register' %}" class="flex items-center p-3 bg-gradient-to-r from-food-orange to-food-red text-white rounded-xl hover:from-food-red hover:to-food-orange transform hover:scale-105 transition-all duration-200 shadow-md">
+               <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+               </svg>
+               <span class="ms-3 font-medium">Sign Up</span>
+            </a>
+         </li>
+         {% endif %}
+      </ul>
+      
+      <!-- Food Emoji Decoration -->
+      <div class="mt-8 text-center">
+         <p class="text-4xl opacity-30">🍕🍔🍜</p>
+      </div>
+   </div>
+</aside>
+
+<!-- Main Content Area -->
+<div class="p-0 sm:ml-0 pt-16">
+   <div class="min-h-screen bg-gradient-to-br from-warm-gray via-orange-50 to-red-50">
+      {% block content %}
+      {% endblock %}
+   </div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-gray-900 text-white">
+   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+         <div class="col-span-1 md:col-span-2">
+            <div class="flex items-center space-x-3 mb-4">
+               <img src="{% static 'home/assets/lets_bite.png' %}" class="h-10 w-10 rounded-xl" alt="Let's Bite Logo" />
+               <span class="text-2xl font-bold bg-gradient-to-r from-food-orange to-food-red bg-clip-text text-transparent">
+                  Let's Bite
+               </span>
+            </div>
+            <p class="text-gray-400 mb-4 max-w-md">Delicious food delivered fresh to your doorstep. Experience the best local restaurants and cuisines in your area.</p>
+            <div class="flex space-x-4">
+               <a href="#" class="text-gray-400 hover:text-food-orange transition-colors duration-200">
+                  <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
+               </a>
+               <a href="#" class="text-gray-400 hover:text-food-orange transition-colors duration-200">
+                  <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/></svg>
+               </a>
+            </div>
+         </div>
+         
+         <div>
+            <h3 class="text-lg font-semibold mb-4 text-food-orange">Quick Links</h3>
+            <ul class="space-y-2">
+               <li><a href="{% url 'home' %}" class="text-gray-400 hover:text-white transition-colors duration-200">Home</a></li>
+               <li><a href="{% url 'hotels' %}" class="text-gray-400 hover:text-white transition-colors duration-200">Restaurants</a></li>
+               <li><a href="{% url 'menu' %}" class="text-gray-400 hover:text-white transition-colors duration-200">Menu</a></li>
+            </ul>
+         </div>
+         
+         <div>
+            <h3 class="text-lg font-semibold mb-4 text-food-orange">Support</h3>
+            <ul class="space-y-2">
+               <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Help Center</a></li>
+               <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Contact Us</a></li>
+               <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Terms of Service</a></li>
+            </ul>
+         </div>
+      </div>
+      
+      <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+         <p class="text-gray-400">© 2024 Let's Bite. All rights reserved. Made with ❤️ for food lovers.</p>
+      </div>
+   </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+</body>
+</html>
                  <span class="flex-1 ms-3 whitespace-nowrap">My orders</span>
               </a>
            </li>
@@ -188,9 +361,6 @@
                 {% endif %}
             {% endfor %}
         {% endif %}
-        {% block content %}
-
-        {% endblock %}
      </div>
   </div>
   

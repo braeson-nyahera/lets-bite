@@ -2,40 +2,122 @@
 {% load static %}
 
 {% block content %}
-    <style>
+<div class="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 flex items-center justify-center px-4">
+  <div class="max-w-md w-full">
+    <!-- Payment Processing Card -->
+    <div class="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl p-8 text-center">
+      <!-- M-Pesa Logo Area -->
+      <div class="w-20 h-20 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
+        </svg>
+      </div>
       
-    </style>
-  </head>
-  <body>
-    <div style="text-align: center">
-      <div class="spinner"></div>
-      <h3>We are processing your payment. Please wait...</h3>
-      <p id="status-message"></p>
+      <!-- Processing Animation -->
+      <div class="flex justify-center mb-6">
+        <div class="relative">
+          <!-- Outer spinning ring -->
+          <div class="w-16 h-16 border-4 border-food-orange/20 border-t-food-orange rounded-full animate-spin"></div>
+          <!-- Inner pulsing dot -->
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="w-3 h-3 bg-food-orange rounded-full animate-pulse"></div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Status Messages -->
+      <h2 class="text-2xl font-bold text-gray-900 mb-2">Processing Payment</h2>
+      <p class="text-gray-600 mb-6">We're securely processing your M-Pesa payment. Please wait a moment...</p>
+      
+      <!-- Payment Details -->
+      <div class="bg-gray-50 rounded-xl p-4 mb-6">
+        <div class="flex items-center justify-between text-sm">
+          <span class="text-gray-600">Transaction ID:</span>
+          <span class="font-mono font-medium text-gray-900">{{ transaction_id }}</span>
+        </div>
+      </div>
+      
+      <!-- Instructions -->
+      <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6">
+        <div class="flex items-start space-x-3">
+          <svg class="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <div class="text-sm text-blue-800">
+            <p class="font-semibold mb-1">Check your phone</p>
+            <p>Complete the payment on your M-Pesa app or by dialing *334#</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Status Message -->
+      <p id="status-message" class="text-sm text-gray-500 mb-4"></p>
+      
+      <!-- Cancel Option -->
+      <div class="flex space-x-4">
+        <a href="/cart/" 
+           class="flex-1 bg-gray-100 text-gray-700 font-semibold py-3 rounded-xl hover:bg-gray-200 transition-colors duration-200">
+          Back to Cart
+        </a>
+        <button onclick="window.location.reload()" 
+                class="flex-1 bg-food-orange text-white font-semibold py-3 rounded-xl hover:bg-food-red transition-colors duration-200">
+          Refresh
+        </button>
+      </div>
     </div>
+    
+    <!-- Footer -->
+    <div class="text-center mt-6">
+      <p class="text-gray-600 text-sm">Secured by M-Pesa • Transaction protected</p>
+    </div>
+  </div>
+</div>
 
-    <script>
-      const transactionId = "{{ transaction_id }}";
+<script>
+  const transactionId = "{{ transaction_id }}";
 
-      let checkStatusInterval = setInterval(function () {
-        console.log("Checking transaction status...");
-        fetch(`/mpesa/check_status/${transactionId}/`)
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.status === "Success") {
-              clearInterval(checkStatusInterval);
-              window.location.href = "/checkout/";
-            } else if (data.status === "Failed") {
-              clearInterval(checkStatusInterval);
-              window.location.href = "/mpesa/payment-failed/";
-            } else if (data.status === "Cancelled") {
-              clearInterval(checkStatusInterval);
-              window.location.href = "/mpesa/payment-cancelled/";
-            }
-          })
-          .catch((error) => {
-            console.error("Error checking transaction status:", error);
-          });
-      }, 3000);
-    </script>
+  // Update status message
+  const statusMessage = document.getElementById('status-message');
+  let dots = '';
+  setInterval(() => {
+    dots = dots.length >= 3 ? '' : dots + '.';
+    statusMessage.textContent = `Checking payment status${dots}`;
+  }, 500);
+
+  let checkStatusInterval = setInterval(function () {
+    console.log("Checking transaction status...");
+    fetch(`/mpesa/check_status/${transactionId}/`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === "Success") {
+          clearInterval(checkStatusInterval);
+          statusMessage.textContent = "Payment successful! Redirecting...";
+          statusMessage.className = "text-sm text-green-600 font-semibold mb-4";
+          setTimeout(() => {
+            window.location.href = "/checkout/";
+          }, 1500);
+        } else if (data.status === "Failed") {
+          clearInterval(checkStatusInterval);
+          statusMessage.textContent = "Payment failed. Redirecting...";
+          statusMessage.className = "text-sm text-red-600 font-semibold mb-4";
+          setTimeout(() => {
+            window.location.href = "/mpesa/payment-failed/";
+          }, 1500);
+        } else if (data.status === "Cancelled") {
+          clearInterval(checkStatusInterval);
+          statusMessage.textContent = "Payment cancelled. Redirecting...";
+          statusMessage.className = "text-sm text-orange-600 font-semibold mb-4";
+          setTimeout(() => {
+            window.location.href = "/mpesa/payment-cancelled/";
+          }, 1500);
+        }
+      })
+      .catch((error) => {
+        console.error("Error checking transaction status:", error);
+        statusMessage.textContent = "Error checking payment status. Please refresh.";
+        statusMessage.className = "text-sm text-red-600 font-semibold mb-4";
+      });
+  }, 3000);
+</script>
 
 {% endblock content %}

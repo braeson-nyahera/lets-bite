@@ -2,54 +2,177 @@
 {% load static %}
 
 {% block content %}
-<Section>
-  <div class="bg-white">
-    <div class="mx-auto max-w-2xl px-4 py-4 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8 py-2">
-      <div class="text-center sm:mt-2">
-        <ul
-          class="breadcrumb inline-flex h-8 items-center justify-center space-x-2 rounded-3xl bg-blue-100 px-4 py-2">
-          <li class="leading-none text-dark">
-            <a class="inline-flex items-center text-primary" href="{% url 'home' %}">
-              <svg
-                class="mr-1.5"
-                width="15"
-                height="15"
-                viewBox="0 0 16 16"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M13.1769 15.0588H10.3533V9.41178H5.64744V15.0588H2.82391V6.58825H1.88274V16H14.118V6.58825H13.1769V15.0588ZM6.58862 15.0588V10.353H9.41215V15.0588H6.58862ZM15.8084 6.09225L15.2512 6.85178L8.00038 1.52472L0.749559 6.8499L0.192383 6.09131L8.00038 0.357666L15.8084 6.09225Z"
-                  fill="black"
-                />
-              </svg>
-              <span class="text-sm leading-none">Home</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-      <h2 class="font-semibold text-2xl pb-4">Favourite Foods</h2>
-  
-      <div class="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-        {% for menu in menus %}
-        <a href="{% url 'menu_detail' menu.id %}" class="relative bg-gray-50 rounded p-2 group bg-white border rounded-lg shadow-lg p-4">
-          <img src="{{ menu.menu_image.url }}" alt="{{ menu.description }}" class="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-[7/8]">
-          <h3 class="mt-4 text-lg font-medium text-gray-900">{{ menu.title}}</h3>
-          <p class="text-lg font-medium text-gray-900">Kshs. {{menu.price }}</p>
-          <h3 class="mt-1 text-sm text-gray-900">By: {{ menu.hotel.name }}</h3>
-          <form class="absolute bottom-2 right-2" action="{% url 'add-to-cart' menu.id %}" method="post">
-            {% csrf_token %}
-            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-yellow-300 hover:text-white px-4 py-2 rounded-full flex items-center shadow-md">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6 mr-2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-              </svg>
-              Add to Cart
-            </button>
-          </form>
-        </a>
-        {% endfor %}
+<!-- Hero Section with Search -->
+<div class="bg-gradient-to-br from-food-orange via-food-red to-orange-600 text-white">
+  <div class="relative">
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <div class="text-center">
+        <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+          <span class="block">Craving Something</span>
+          <span class="block bg-gradient-to-r from-food-yellow to-orange-200 bg-clip-text text-transparent">
+            Delicious?
+          </span>
+        </h1>
+        
+        <p class="text-xl md:text-2xl mb-8 text-orange-100 max-w-2xl mx-auto">
+          Discover amazing food from local restaurants and get it delivered fresh to your doorstep
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="{% url 'menu' %}" class="bg-white text-food-orange px-8 py-4 rounded-xl font-bold text-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 flex items-center justify-center">
+            <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
+            </svg>
+            Explore Menu
+          </a>
+          <a href="{% url 'hotels' %}" class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white hover:text-food-orange transition-all duration-200 flex items-center justify-center">
+            <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4zM18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9z"/>
+            </svg>
+            View Restaurants
+          </a>
+        </div>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- Featured Menu Items -->
+<section class="py-16 bg-gradient-to-b from-white to-orange-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Section Header -->
+    <div class="text-center mb-16">
+      <h2 class="text-4xl md:text-5xl font-bold mb-4">
+        <span class="bg-gradient-to-r from-food-orange to-food-red bg-clip-text text-transparent">
+          Featured
+        </span>
+        <span class="text-gray-900">Delicacies</span>
+      </h2>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+        Handpicked dishes from our top-rated restaurants that will make your taste buds dance
+      </p>
+      <div class="mt-6 w-20 h-1 bg-gradient-to-r from-food-orange to-food-red mx-auto rounded-full"></div>
+    </div>
+
+    <!-- Food Cards Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+      {% for menu in menus %}
+      <div class="group bg-white rounded-3xl shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-300 overflow-hidden border border-gray-100 hover:border-orange-200">
+        
+        <!-- Food Image -->
+        <div class="relative overflow-hidden">
+          <img src="{{ menu.menu_image.url }}" 
+               alt="{{ menu.title }}" 
+               class="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-500">
+          
+          <!-- Price Badge -->
+          <div class="absolute top-4 right-4">
+            <span class="bg-gradient-to-r from-food-orange to-food-red text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg">
+              Ksh {{ menu.price }}
+            </span>
+          </div>
+          
+          <!-- Restaurant Badge -->
+          <div class="absolute top-4 left-4">
+            <span class="bg-black/70 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-medium">
+              {{ menu.hotel.name }}
+            </span>
+          </div>
+          
+          <!-- Availability Indicator -->
+          {% if menu.availability %}
+          <div class="absolute bottom-4 left-4">
+            <div class="flex items-center space-x-1 bg-green-500/90 backdrop-blur-sm text-white px-2 py-1 rounded-full text-xs">
+              <div class="w-2 h-2 bg-green-300 rounded-full animate-pulse"></div>
+              <span class="font-medium">Available</span>
+            </div>
+          </div>
+          {% else %}
+          <div class="absolute bottom-4 left-4">
+            <div class="flex items-center space-x-1 bg-red-500/90 backdrop-blur-sm text-white px-2 py-1 rounded-full text-xs">
+              <div class="w-2 h-2 bg-red-300 rounded-full"></div>
+              <span class="font-medium">Sold Out</span>
+            </div>
+          </div>
+          {% endif %}
+          
+          <!-- Overlay Gradient -->
+          <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        </div>
+        
+        <!-- Card Content -->
+        <div class="p-6">
+          <!-- Item Name -->
+          <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-food-orange transition-colors duration-200">
+            {{ menu.title }}
+          </h3>
+          
+          <!-- Description -->
+          <p class="text-gray-600 text-sm mb-4 leading-relaxed line-clamp-2">
+            {{ menu.description|default:"A delicious dish crafted with the finest ingredients and authentic flavors that will satisfy your cravings." }}
+          </p>
+          
+          <!-- Rating and Time -->
+          <div class="flex items-center justify-between mb-4 text-sm text-gray-500">
+            <div class="flex items-center space-x-1">
+              <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+              </svg>
+              <span class="font-medium">4.8</span>
+              <span>(124)</span>
+            </div>
+            <div class="flex items-center space-x-1">
+              <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              <span>20-30 min</span>
+            </div>
+          </div>
+          
+          <!-- Add to Cart Button -->
+          {% if menu.availability %}
+          <form action="{% url 'add-to-cart' menu.id %}" method="post" class="w-full">
+            {% csrf_token %}
+            <button type="submit" class="w-full bg-gradient-to-r from-food-orange to-food-red text-white py-3 rounded-xl font-semibold hover:from-food-red hover:to-orange-600 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2 group/btn">
+              <svg class="w-5 h-5 group-hover/btn:rotate-12 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.1 5M7 13l-1.1-5m0 0L4 5H2m5 8v6a2 2 0 002 2h6a2 2 0 002-2v-6"/>
+              </svg>
+              <span>Add to Cart</span>
+            </button>
+          </form>
+          {% else %}
+          <button disabled class="w-full bg-gray-300 text-gray-500 py-3 rounded-xl font-semibold cursor-not-allowed">
+            Currently Unavailable
+          </button>
+          {% endif %}
+        </div>
+      </div>
+      {% empty %}
+      <!-- No items fallback -->
+      <div class="col-span-full text-center py-16">
+        <div class="text-8xl mb-4">🍽️</div>
+        <h3 class="text-2xl font-bold text-gray-900 mb-4">No Menu Items Yet</h3>
+        <p class="text-gray-600 mb-8">We're working on adding delicious items to our menu. Check back soon!</p>
+        <a href="{% url 'hotels' %}" class="bg-gradient-to-r from-food-orange to-food-red text-white px-6 py-3 rounded-xl font-semibold hover:from-food-red hover:to-orange-600 transition-all duration-200">
+          Explore Restaurants
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+    
+    <!-- View More Button -->
+    {% if menus %}
+    <div class="text-center mt-12">
+      <a href="{% url 'menu' %}" class="inline-flex items-center space-x-2 bg-white text-food-orange border-2 border-food-orange px-8 py-4 rounded-xl font-bold text-lg hover:bg-food-orange hover:text-white transform hover:scale-105 transition-all duration-200 shadow-lg">
+        <span>View Full Menu</span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+        </svg>
+      </a>
+    </div>
+    {% endif %}
+    
   </div>
 </section>
 
