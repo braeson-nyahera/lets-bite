@@ -25,7 +25,7 @@ class Menu(models.Model):
     hotel = models.ForeignKey(Hotel,on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     description = models.TextField()
-    menu_image = models.ImageField(upload_to='menu')
+    menu_image = models.ImageField(upload_to='menu', default='hotel_default.png')
     price = models.IntegerField()
     category = models.CharField(max_length=50,choices=Category.choices, default=Category.Main_Course)
     availability = models.BooleanField(default=True)

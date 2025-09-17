@@ -31,6 +31,8 @@ urlpatterns = [
     path('',include(home_urls)),
     path('hotel/',include(hotel_urls)),
     path('mpesa/',include(mpesa_urls)),
+    path('accounts/',include('allauth.urls')),
+
 ]
 
 if settings.DEBUG:

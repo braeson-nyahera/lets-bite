@@ -27,12 +27,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
 
 # Application definition
+
+SITE_ID = 2
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -49,8 +51,23 @@ INSTALLED_APPS = [
     'mpesa.apps.MpesaConfig',
 
     #third parties
-    'storages'
+    'storages',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google'
 ]
+
+SOCIAL_ACCOUNT_PROVIDERS = {
+    "google":{
+        "SCOPE": [
+            'profile',
+            'email'
+        ],
+        'AUTH_PARAMS':{'access_type':'online'}
+    }
+}
 
 AUTH_USER_MODEL = 'user.CustomUser'
 
@@ -62,6 +79,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware'
 ]
 
 ROOT_URLCONF = 'lets_bite.urls'
@@ -90,31 +108,35 @@ WSGI_APPLICATION = 'lets_bite.wsgi.application'
 
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'os.getenv('DB_NAME'),
-#         'USER': os.getenv('DB_USER'),
-#         'PASSWORD' : os.getenv('DB_PASSWORD'),
-#         'HOST': os.getenv('DB_HOST'),
-#         'PORT' : '5432', #'3306',
-#         # 'OPTIONS':{
-#         #     'sslmode':'require',
-#         # },
-#         # 'OPTIONS': {
-#         #     'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
-#         # },
+#         'ENGINE': 'django.db.backends.sqlite3',   # SQLite backend
+#         'NAME': BASE_DIR / "db.sqlite3",          # Database file path
 #     }
 # }
 
-# #supabase postgres database
-import dj_database_url
-
 DATABASES = {
-    'default': dj_database_url.parse(
-        os.getenv('RENDER_DB_URL'),
-        conn_max_age=600,
-        ssl_require=True
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD' : os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT' : os.getenv('DB_PORT', '5432'),
+        'OPTIONS':{
+            'sslmode': os.getenv('DB_SSLMODE', 'prefer'),  # prefer, require, disable
+        },
+    }
 }
+
+# #supabase postgres database
+# import dj_database_url
+
+# DATABASES = {
+#     'default': dj_database_url.parse(
+#         os.getenv('RENDER_DB_URL'),
+#         conn_max_age=600,
+#         ssl_require=True
+#     )
+# }
 
 
 # Password validation
@@ -194,3 +216,11 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = os.getenv('EMAIL')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend'
+)
+
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
