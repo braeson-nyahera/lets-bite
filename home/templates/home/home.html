@@ -59,62 +59,125 @@
 </div>
 
 <!-- Hero Section -->
-<div class="bg-gradient-to-br from-food-orange via-food-red to-orange-600 text-white">
-  <div class="relative">
-    <!-- Decorative Elements -->
-    <div class="absolute inset-0 overflow-hidden">
-      <div class="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full"></div>
-      <div class="absolute top-1/2 -left-20 w-60 h-60 bg-white/5 rounded-full"></div>
-      <div class="absolute bottom-0 right-1/4 w-32 h-32 bg-white/10 rounded-full"></div>
-    </div>
-    
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <div class="text-center">
-        <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-          <span class="block">Craving Something</span>
+<div class="relative bg-gradient-to-br from-food-orange via-food-red to-orange-600 overflow-hidden">
+  <!-- Floating Food Elements -->
+  <div class="absolute inset-0">
+    <div class="absolute top-4 left-4 text-3xl animate-bounce" style="animation-delay: 0s;">🍕</div>
+    <div class="absolute top-6 right-8 text-2xl animate-bounce" style="animation-delay: 1s;">🍔</div>
+    <div class="absolute bottom-8 left-8 text-3xl animate-bounce" style="animation-delay: 2s;">🍜</div>
+    <div class="absolute bottom-4 right-4 text-2xl animate-bounce" style="animation-delay: 0.5s;">🥗</div>
+    <div class="absolute top-1/2 left-1/4 text-2xl animate-pulse opacity-20">🍤</div>
+    <div class="absolute top-1/3 right-1/3 text-xl animate-pulse opacity-20">🌮</div>
+  </div>
+  
+  <!-- Geometric Background -->
+  <div class="absolute inset-0">
+    <div class="absolute top-0 left-0 w-32 h-32 bg-white/5 rounded-full -translate-x-16 -translate-y-16"></div>
+    <div class="absolute bottom-0 right-0 w-48 h-48 bg-white/10 rounded-full translate-x-24 translate-y-24"></div>
+    <div class="absolute top-1/2 left-1/2 w-20 h-20 bg-white/5 rounded-full transform -translate-x-1/2 -translate-y-1/2"></div>
+  </div>
+  
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-10">
+    <div class="grid lg:grid-cols-2 gap-6 items-center">
+      
+      <!-- Left Content -->
+      <div class="text-white space-y-4">
+        <div class="inline-flex items-center bg-white/20 backdrop-blur-sm rounded-full px-3 py-1.5 text-xs font-medium">
+          <span class="w-1.5 h-1.5 bg-green-400 rounded-full mr-2 animate-pulse"></span>
+          50+ Restaurants Available
+        </div>
+        
+        <h1 class="text-3xl lg:text-5xl font-bold leading-tight">
+          <span class="block">Hungry?</span>
           <span class="block bg-gradient-to-r from-food-yellow to-orange-200 bg-clip-text text-transparent">
-            Delicious?
+            We Deliver!
           </span>
         </h1>
         
-        <p class="text-xl md:text-2xl mb-8 text-orange-100 max-w-2xl mx-auto">
-          Discover amazing food from local restaurants and get it delivered fresh to your doorstep
+        <p class="text-base lg:text-lg text-orange-100 max-w-lg">
+          Get delicious food delivered in 
+          <span class="font-bold text-food-yellow">30 minutes</span> or less!
         </p>
         
-        <!-- Quick Stats -->
-        <div class="grid grid-cols-3 gap-4 max-w-md mx-auto mb-8">
-          <div class="text-center">
-            <div class="text-2xl font-bold">{{ trending_hotels|length }}+</div>
-            <div class="text-sm text-orange-200">Restaurants</div>
-          </div>
-          <div class="text-center">
-            <div class="text-2xl font-bold">{{ featured_menus|length }}+</div>
-            <div class="text-sm text-orange-200">Menu Items</div>
-          </div>
-          <div class="text-center">
-            <div class="text-2xl font-bold">24/7</div>
-            <div class="text-sm text-orange-200">Delivery</div>
-          </div>
-        </div>
-        
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="{% url 'menu' %}" class="bg-white text-food-orange px-8 py-4 rounded-xl font-bold text-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 flex items-center justify-center">
-            <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20">
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-3">
+          <a href="{% url 'menu' %}" class="group bg-white text-food-orange px-5 py-2.5 rounded-xl font-bold text-sm hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center">
+            <svg class="w-4 h-4 mr-2 group-hover:rotate-12 transition-transform" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
             </svg>
-            Explore Menu
+            Order Now
           </a>
-          <a href="{% url 'hotels' %}" class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white hover:text-food-orange transition-all duration-200 flex items-center justify-center">
-            <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20">
+          <a href="{% url 'hotels' %}" class="group bg-transparent border-2 border-white/50 text-white px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-white/10 backdrop-blur-sm transition-all duration-300 flex items-center justify-center">
+            <svg class="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 20 20">
               <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4zM18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9z"/>
             </svg>
-            View Restaurants
+            Explore
           </a>
+        </div>
+        
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-3 gap-2 pt-2">
+          <div class="text-center bg-white/10 backdrop-blur-sm rounded-lg p-2">
+            <div class="text-lg font-bold">{{ trending_hotels|length }}+</div>
+            <div class="text-xs text-orange-200">Restaurants</div>
+          </div>
+          <div class="text-center bg-white/10 backdrop-blur-sm rounded-lg p-2">
+            <div class="text-lg font-bold">{{ featured_menus|length }}+</div>
+            <div class="text-xs text-orange-200">Dishes</div>
+          </div>
+          <div class="text-center bg-white/10 backdrop-blur-sm rounded-lg p-2">
+            <div class="text-lg font-bold">30min</div>
+            <div class="text-xs text-orange-200">Delivery</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Right Visual -->
+      <div class="relative lg:block hidden">
+        <div class="relative">
+          <!-- Main Food Image Circle -->
+          <div class="w-64 h-64 mx-auto relative">
+            <div class="absolute inset-0 bg-white/20 backdrop-blur-sm rounded-full animate-pulse"></div>
+            <div class="absolute inset-3 bg-white/30 backdrop-blur-sm rounded-full animate-pulse" style="animation-delay: 0.5s;"></div>
+            <div class="absolute inset-6 bg-white rounded-full shadow-2xl flex items-center justify-center">
+              <div class="text-center">
+                <div class="text-5xl mb-2">🍽️</div>
+                <p class="text-gray-700 font-bold text-sm">Ready to Serve!</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Floating Mini Cards -->
+          <div class="absolute -top-2 -left-2 bg-white rounded-lg p-2 shadow-lg animate-float">
+            <div class="text-lg">🚚</div>
+            <p class="text-xs font-bold text-gray-700">Fast</p>
+          </div>
+          
+          <div class="absolute -bottom-2 -right-2 bg-white rounded-lg p-2 shadow-lg animate-float" style="animation-delay: 1s;">
+            <div class="text-lg">⭐</div>
+            <p class="text-xs font-bold text-gray-700">Rated</p>
+          </div>
+          
+          <div class="absolute top-1/2 -right-4 bg-white rounded-lg p-2 shadow-lg animate-float" style="animation-delay: 2s;">
+            <div class="text-lg">🔥</div>
+            <p class="text-xs font-bold text-gray-700">Fresh</p>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<!-- Custom Animations -->
+<style>
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+</style>
 
 <!-- Food On Offer Section -->
 <section class="py-16 bg-gradient-to-b from-white to-orange-50">
