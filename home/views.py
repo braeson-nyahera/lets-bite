@@ -9,10 +9,52 @@ from mpesa.models import Transaction
 
 # Create your views here.
 def home(request):
-    menus = Menu.objects.all()
+    # Featured/On Offer Menu Items (latest or discounted items) - reduced to 4
+    featured_menus = Menu.objects.filter(availability=True).order_by('-created_at')[:4]
     
-    context= {
-        'menus':menus,
+    # Trending Hotels (hotels with most menu items or recent activity) - reduced to 3
+    trending_hotels = Hotel.objects.all().order_by('-created_at')[:3]
+    
+    # Trending Menu Items (could be based on orders, for now using recent + available) - reduced to 3
+    trending_menus = Menu.objects.filter(availability=True).order_by('-updated_at')[:3]
+    
+    # Dynamic Announcements (you can later make this from a database model)
+    announcements = [
+        {
+            'title': 'Free Delivery on Orders Above Ksh 1000!',
+            'description': 'Get your favorite meals delivered for free when you order above Ksh 1000',
+            'type': 'offer',  # offer, news, promotion
+            'icon': 'truck',
+            'color': 'from-green-500 to-green-600'
+        },
+        {
+            'title': 'New Restaurant: Farmers Choice Kitchen',
+            'description': 'Fresh organic meals now available from our newest partner',
+            'type': 'news',
+            'icon': 'star',
+            'color': 'from-blue-500 to-blue-600'
+        },
+        {
+            'title': '20% Off on Weekend Orders!',
+            'description': 'Enjoy weekend specials with amazing discounts on selected items',
+            'type': 'promotion',
+            'icon': 'percent',
+            'color': 'from-purple-500 to-purple-600'
+        },
+        {
+            'title': 'Now Accepting M-Pesa Payments',
+            'description': 'Pay conveniently with M-Pesa for faster checkout experience',
+            'type': 'news',
+            'icon': 'credit-card',
+            'color': 'from-orange-500 to-orange-600'
+        }
+    ]
+    
+    context = {
+        'featured_menus': featured_menus,
+        'trending_hotels': trending_hotels,
+        'trending_menus': trending_menus,
+        'announcements': announcements,
     }
     return render(request, 'home/home.html', context)
 
